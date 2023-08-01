@@ -1,0 +1,13 @@
+body{
+background-color:rgb(250, 136, 240);
+}
+
+.btn{
+    margin-top: 10px;
+    background-color: rgb(136, 105, 133);
+    color: white;
+}
+
+.btn:hover{
+    background-color: rgb(104, 80, 102) !important;
+}

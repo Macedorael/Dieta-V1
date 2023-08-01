@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+form{
+    display: flex;
+    flex-direction: column;
+    background-color:#f00;
+}
+.gerar{
+    margin-top: 1rem;
+    background-color: rgb(57, 240, 127);
+}
+    </style>
+</head>
+<body>
+    <h1>Adicionar Cliente</h1>
+
+    <form action="/processar_formulario" method="POST">
+        {% csrf_token %}
+        <label for="name">Nome:</label>
+        <input type="text" name="nome">
+        <label for="sexo">Sexo:</label>
+        <input type="text" name="sexo">
+        <label for="idade">Idade:</label>
+        <input type="text" name="idade">
+        <label for="peso">Peso:</label>
+        <input type="text" name="peso">
+        <label for="altura">Altura:(centimetros)</label>
+        <input type="text" name="altura">
+        <input class="adicionar" type="submit" value="Adicionar Cliente">
+    </form>
+    
+</body>
+</html>
