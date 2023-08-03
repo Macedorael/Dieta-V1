@@ -1,5 +1,3 @@
-
-
 from .models import Dietas
 from django.db.models import  Q
 

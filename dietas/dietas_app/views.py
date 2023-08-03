@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 
 from .bdo import PacienteService
-from .forms import PacienteForm, AlimentoForm, DietasForm
+from .forms import PacienteForm, AlimentoForm, DietasForm,MedidaForm
 from .models import Paciente, Alimento,Medida,Dietas,Refeicao
 from django.contrib import messages
 from django.db.models import  Q
@@ -83,7 +83,7 @@ def painel(request):
 
 
 
-def paciente(request, pk):
+def plano(request, pk):
     paciente_form = Paciente.objects.get(id=pk)
     paciente = Paciente.objects.get(id=pk)
     data_especifica = None
@@ -99,7 +99,7 @@ def paciente(request, pk):
         form = DietasForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('paciente', pk=pk) 
+            return redirect('plano', pk=pk) 
     else:
         form = DietasForm(initial={'paciente': paciente})
 
@@ -116,22 +116,61 @@ def paciente(request, pk):
     context.update(retDietaPaciente)
     context.update(retSomaProteinas)
     
-    return render(request, 'paciente.html', context)
+    return render(request, 'plano.html', context)
 
 
-def dieta(request, pk):
+def paciente(request, pk):
     paciente = Paciente.objects.get(id=pk)
+    medida = Medida.objects.get(nome=paciente)
+
+    imc = medida.peso / (medida.altura * medida.altura )
+    imc = round(imc, 2)
+
+    if imc < 18.5:
+        classificacao = 'MAGREZA'
     
-    if request.method == 'POST':
-        form = DietasForm(request.POST)
-        
-        if form.is_valid():
-            form.instance.paciente = paciente 
-            form.save()
-            return redirect('paciente', pk=pk) 
+    elif imc >= 18.5 and imc <= 24.9:
+        classificacao = 'NORMAL'
+    
+    elif imc >= 25.0 and imc <= 29.9:
+        classificacao = 'SOBREPESO'
+
+    elif imc >= 30.0 and imc < 39.9:
+        classificacao = 'OBESIDADE'
+
     else:
-        form = DietasForm(initial={'paciente': paciente})  
-    return render(request, 'dieta.html', {'form': form})
+        classificacao ='OBESIDADE GRAVE'
+
+
+
+
+    context = {
+        'paciente': paciente,
+        'medida': medida,
+        'imc':imc,
+        'classificacao': classificacao
+    }
+    return render(request, 'paciente.html',context)
+
+def medida(request,pk):
+    paciente = Paciente.objects.get(id=pk)
+
+    if request.method == 'POST':
+        nome = paciente
+        peso = request.POST.get('peso')
+        altura = request.POST.get('altura')
+        
+        # Crie o objeto Medida e salve no banco de dados
+        medida = Medida(nome=nome,peso=peso, altura=altura)
+        medida.save()
+
+        # Redirecione para a página inicial (ou para onde desejar)
+        return redirect('paciente', pk=pk)
+    context={
+        'paciente': paciente
+
+    }
+    return render(request, 'medida.html',context)
 
 
 

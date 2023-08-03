@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index,processar_formulario, login, logout, cadastro, painel,paciente,dieta
+from .views import index,processar_formulario, login, logout, cadastro, painel,paciente,plano,medida
 
 urlpatterns = [
     path('index', index, name='index'),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('cadastro/',cadastro, name='cadastro'),
     path('painel/', painel, name = 'painel'),
     path('paciente/<int:pk>', paciente, name='paciente'),
-    path('dieta/<int:pk>', dieta, name='dieta'),
+    path('plano/<int:pk>', plano, name='plano'),
+    path('medida/<int:pk>', medida, name='medida'),
 ]
