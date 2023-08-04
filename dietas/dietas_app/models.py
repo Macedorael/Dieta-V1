@@ -21,7 +21,9 @@ class Medida(Base):
     nome = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     peso = models.DecimalField('Peso', max_digits=15, decimal_places=2)
     altura = models.DecimalField('Altura', max_digits=15, decimal_places=2)
-
+    imc = models.DecimalField('Imc', max_digits=15,decimal_places=3)
+    classificacao = models.CharField('Classificação', max_length=20)
+    
     def __str__(self) -> str:
         return f'{self.nome}'
 

@@ -6,7 +6,7 @@ class PacienteAdmin(admin.ModelAdmin):
     list_display = ('nome','telefone','email','criado','modificado','ativo')
 
 class MedidaAdmin(admin.ModelAdmin):
-    list_display = ('nome','peso','altura','modificado')
+    list_display = ('nome','peso','altura','imc','classificacao','modificado')
 
 
 class AlimentoAdmin(admin.ModelAdmin):

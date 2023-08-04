@@ -9,7 +9,7 @@ class PacienteForm(forms.ModelForm):
 class MedidaForm(forms.ModelForm):
     class Meta:
         model = Medida
-        fields = ['nome', 'peso', 'altura']
+        fields = ['nome', 'peso', 'altura','imc','classificacao']
 
 
 class AlimentoForm(forms.ModelForm):

@@ -121,50 +121,49 @@ def plano(request, pk):
 
 def paciente(request, pk):
     paciente = Paciente.objects.get(id=pk)
-    medida = Medida.objects.get(nome=paciente)
-
-    imc = medida.peso / (medida.altura * medida.altura )
-    imc = round(imc, 2)
-
-    if imc < 18.5:
-        classificacao = 'MAGREZA'
+    medida = Medida.objects.filter(id=pk)
     
-    elif imc >= 18.5 and imc <= 24.9:
-        classificacao = 'NORMAL'
-    
-    elif imc >= 25.0 and imc <= 29.9:
-        classificacao = 'SOBREPESO'
-
-    elif imc >= 30.0 and imc < 39.9:
-        classificacao = 'OBESIDADE'
-
-    else:
-        classificacao ='OBESIDADE GRAVE'
-
-
-
 
     context = {
         'paciente': paciente,
-        'medida': medida,
-        'imc':imc,
-        'classificacao': classificacao
+        'medida': medida
+        
     }
     return render(request, 'paciente.html',context)
+
+
 
 def medida(request,pk):
     paciente = Paciente.objects.get(id=pk)
 
     if request.method == 'POST':
         nome = paciente
-        peso = request.POST.get('peso')
-        altura = request.POST.get('altura')
+        peso = float(request.POST.get('peso'))
+        altura = float(request.POST.get('altura'))
         
-        # Crie o objeto Medida e salve no banco de dados
-        medida = Medida(nome=nome,peso=peso, altura=altura)
+        imc = peso / (altura * altura )
+        
+
+        if imc < 18.5:
+            classificacao = 'MAGREZA'
+        
+        elif imc >= 18.5 and imc <= 24.9:
+            classificacao = 'NORMAL'
+        
+        elif imc >= 25.0 and imc <= 29.9:
+            classificacao = 'SOBREPESO'
+
+        elif imc >= 30.0 and imc < 39.9:
+            classificacao = 'OBESIDADE'
+
+        else:
+            classificacao ='OBESIDADE GRAVE'
+
+            
+        medida = Medida(nome=nome,peso=peso, altura=altura, imc=imc, classificacao=classificacao)
         medida.save()
 
-        # Redirecione para a página inicial (ou para onde desejar)
+        
         return redirect('paciente', pk=pk)
     context={
         'paciente': paciente
